@@ -1,17 +1,28 @@
 <template>
     <div class="container">
+      <app-header></app-header>
       <div class="row">
-        <router-view></router-view>
+        <div class="col-xs-12">
+          <router-view></router-view>
+        </div>
       </div>
     </div>
 </template>
 
 <script>
+    import Header from './components/header.vue'
     export default {
-      
+      components:{
+        appHeader: Header
+      },
+      created(){
+        this.$store.dispatch('initStock')
+      }
     }
 </script>
 
 <style>
-
+body{
+  padding:30px;
+}
 </style>

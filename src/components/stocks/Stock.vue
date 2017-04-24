@@ -1,3 +1,74 @@
 <template>
-  <h1>The Stock Component</h1>
+  <div>
+      <div class="col-sm-6 col-md-4">
+        <div class="panel panel-success">
+          <div class="panel-heading">
+            <h3 class="panel-title">
+              {{stock.name}}
+              <small>(Price: ${{ stock.price }})</small>
+            </h3>
+          </div>
+          <div class="panel-body">
+            <div class="pull-left">
+              <input type="number" class="form-control" placeholder="quantity"
+              v-model='quantity'>
+
+            </div>
+            <div class="pull-right">
+              <button class='btn btn-success' @click='buyStock'
+              :disabled="quantity <= 0">Buy</button>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
 </template>
+<script>
+  export default{
+    props: ['stock'],
+    data(){
+      return {
+        quantity: 0
+      }
+    },
+    methods: {
+      buyStock(){
+        const order = {
+          stockId: this.stock.id,
+          stockPrice: this.stock.price,
+          quantity: this.quantity
+        };
+        this.$store.dispatch('buyStock', order)
+        this.quantity = 0;
+      }
+    }
+  }
+</script>
+
+<style media="screen">
+  .box{
+    border-radius: 10px;
+    border-width: medium;
+    border-color: black;
+    border-style: inset;
+    height: 170px;
+    width: 450px;
+    overflow: hidden;
+    position: relative;
+  }
+  .btn{
+    margin-left: 55px;
+    background-color: green;
+  }
+  .input{
+    border-radius: 5px;
+    margin-left: 10px;
+    height: 35px;
+    width: 325px;
+  }
+  .top{
+    background-color: green;
+    height: 40px;
+    width: 450px;
+  }
+</style>
