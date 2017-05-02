@@ -1,89 +1,67 @@
 <template>
-  <div>
-      <div class="col-sm-6 col-md-4">
-        <div class="panel panel-info">
-          <div class="panel-heading">
-            <h3 class="panel-title">
-              {{stock.name}}
-              <small>(Price: ${{ stock.price }})</small>
-            </h3>
-          </div>
-          <div class="panel-body">
-            <div class="pull-left">
-              <input type="number" class="form-control" placeholder="quantity"
-              v-model='quantity'
-              :class="{danger: insufficentFunds}">
-
+    <div class="col-sm-6 col-md-4">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    {{ stock.name }}
+                    <small>(Price: {{ stock.price }})</small>
+                </h3>
             </div>
-            <div class="pull-right">
-              <button class='btn btn-success' @click='buyStock'
-              :disabled="insufficentFunds || quantity <= 0">{{insufficentFunds ? 'Insufficent Funds' : 'Buy' }}</button>
+            <div class="panel-body">
+                <div class="pull-left">
+                    <input
+                            type="number"
+                            class="form-control"
+                            placeholder="Quantity"
+                            v-model="quantity"
+                            :class="{danger: insufficientFunds}"
+                    >
+                </div>
+                <div class="pull-right">
+                    <button
+                            class="btn btn-success"
+                            @click="buyStock"
+                            :disabled="insufficientFunds || quantity <= 0 || !Number.isInteger(quantity)"
+                    >{{ insufficientFunds ? 'Insufficient Funds' : 'Buy' }}
+                    </button>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-  </div>
+    </div>
 </template>
+
 <style scoped>
-  .danger{
-    border: 1px solid red;
-  }
-
-</style>
-<script>
-  export default{
-    props: ['stock'],
-    data(){
-      return {
-        quantity: 0
-      }
-    },
-    computed: {
-      funds(){
-        return this.$store.getters.funds;
-      },
-      insufficentFunds(){
-        return this.quantitiy * this.stock.price > this.funds;
-      }
-    },
-    methods: {
-      buyStock(){
-        const order = {
-          stockId: this.stock.id,
-          stockPrice: this.stock.price,
-          quantity: this.quantity
-        };
-        this.$store.dispatch('buyStock', order)
-        this.quantity = 0;
-      }
+    .danger {
+        border: 1px solid red;
     }
-  }
-</script>
-
-<style media="screen">
-  .box{
-    border-radius: 10px;
-    border-width: medium;
-    border-color: black;
-    border-style: inset;
-    height: 170px;
-    width: 450px;
-    overflow: hidden;
-    position: relative;
-  }
-  .btn{
-    margin-left: 55px;
-    background-color: green;
-  }
-  .input{
-    border-radius: 5px;
-    margin-left: 10px;
-    height: 35px;
-    width: 325px;
-  }
-  .top{
-    background-color: green;
-    height: 40px;
-    width: 450px;
-  }
 </style>
+
+<script>
+    export default {
+        props: ['stock'],
+        data() {
+            return {
+                quantity: 0
+            }
+        },
+        computed: {
+            funds() {
+                return this.$store.getters.funds;
+            },
+            insufficientFunds() {
+                return this.quantity * this.stock.price > this.funds;
+            }
+        },
+        methods: {
+            buyStock() {
+                const order = {
+                    stockId: this.stock.id,
+                    stockPrice: this.stock.price,
+                    quantity: this.quantity
+                };
+                this.$store.dispatch('buyStock', order);
+                this.quantity = 0;
+            }
+        }
+    }
+</script>

@@ -1,25 +1,20 @@
 <template>
-  <div>
-    <app-stock v-for="stock in stocks" :stock="stock"></app-stock>
-  </div>
+    <div>
+        <app-stock v-for="stock in stocks" :stock="stock"></app-stock>
+    </div>
 </template>
 
 <script>
-  import Stock from './Stock.vue';
-  export default{
-    components: {
-      appStock: Stock
-    },
-    computed: {
-      stocks(){
-        return this.$store.getters.stocks
-      }
-    }
-  }
-</script>
+    import Stock from './Stock.vue';
 
-<style media="screen">
-  .row{
-    padding: 20px 0 20px 0
-  }
-</style>
+    export default {
+        components: {
+            appStock: Stock
+        },
+        computed: {
+            stocks() {
+                return this.$store.getters.stocks;
+            }
+        }
+    }
+</script>
